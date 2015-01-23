@@ -1,6 +1,5 @@
 package org.gif;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,12 +22,12 @@ public class MongoGifExample {
          DBCollection col = mc.getDB("gifs").getCollection("gif");
          
 
-         File gif = new File("cat-filing-nails.gif");
+         String originalGif = "cat-filing-nails.gif";
 
-         BasicDBObject dbo = new BasicDBObject("file", gif.getName());
+         BasicDBObject dbo = new BasicDBObject("file", originalGif);
 
          InputStream is = Files.newInputStream(Paths
-               .get("cat-filing-nails.gif"));
+               .get(originalGif));
 
          List<Integer> gifBytes = new ArrayList<Integer>();
          int b = -1;
@@ -40,7 +39,7 @@ public class MongoGifExample {
          
          col.insert(dbo);
          
-         DBObject findOne = col.findOne(new BasicDBObject("file",gif.getName()));
+         DBObject findOne = col.findOne(new BasicDBObject("file",originalGif));
          
          
          @SuppressWarnings("unchecked")
@@ -52,8 +51,6 @@ public class MongoGifExample {
             os.write(i);
          }
          
-
-         System.out.println(gif.exists());
       } finally {
          if (null != mc) {
             mc.close();
